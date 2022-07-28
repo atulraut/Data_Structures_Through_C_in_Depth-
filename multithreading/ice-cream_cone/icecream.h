@@ -8,6 +8,8 @@
 #include <stdint.h>
 #include <unistd.h>
 
+#define debug(str,args...) printf("[%s] L=%d :"str"\n", __func__, __LINE__, ##args)
+
 #define TRUE  1
 #define FALSE 0
 

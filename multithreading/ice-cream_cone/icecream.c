@@ -49,6 +49,7 @@ uint32_t open_store() {
 
     pthread_mutex_lock(&cashier_queue_lock);
     num_customers = rand() % MAX_CUSTOMERS + 1;
+    debug ("num of customers = %d", num_customers);
     pthread_mutex_unlock(&cashier_queue_lock);
 
     return num_customers;
@@ -90,7 +91,7 @@ void *customer(void *args){
     uint32_t index;
     pthread_t clerks[10];
 
-    printf("CUSTOMER: %lu, Requested cones: %u\n", pthread_self(), num_cones);
+    debug("CUSTOMER: %lu, Requested cones: %u\n", pthread_self(), num_cones);
 
     for(index = 0; index < num_cones; index++)
         pthread_create(&clerks[index], NULL, clerk, NULL);
@@ -98,7 +99,7 @@ void *customer(void *args){
     for(index=0; index < num_cones; index++)
         pthread_join(clerks[index], NULL);
 
-    printf("CUSTOMER: %lu, Got all cones\n", pthread_self());
+    debug("CUSTOMER: %lu, Got all cones\n", pthread_self());
 
     make_payment();
 
@@ -134,7 +135,7 @@ void *clerk(void *args){
 void *cashier(void *args){
     while (num_customers){
         CASHIER_PROCESSING;
-        printf("CASHIER: Customers in Queue: %u\n", num_customers);
+        debug("CASHIER: Customers in Queue: %u\n", num_customers);
     }
 
     no_more_cones = TRUE;
